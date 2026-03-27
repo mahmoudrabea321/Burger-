@@ -1,5 +1,5 @@
 
-View your app in AI Studio: https://ai.studio/apps/ca292e51-ac4d-4367-bc74-4165eaef1a1e
+Live: https://ai.studio/apps/ca292e51-ac4d-4367-bc74-4165eaef1a1e
 
 ## Run Locally
 

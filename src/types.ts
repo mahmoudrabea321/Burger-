@@ -20,6 +20,7 @@ export interface Order {
   customerName: string;
   customerPhone: string;
   customerAddress: string;
+  paymentMethod: 'cash' | 'card';
   items: OrderItem[];
   totalAmount: number;
   status: 'Pending' | 'Processing' | 'Delivered' | 'Cancelled';

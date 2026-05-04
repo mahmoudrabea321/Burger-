@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Minus, Plus, ShoppingBag, ArrowLeft, Loader2 } from 'lucide-react';
+import { X, Minus, Plus, ShoppingBag, ArrowLeft, Loader2, CreditCard, Banknote } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 interface CartProps {
@@ -14,7 +14,8 @@ export default function Cart({ isOpen, onClose }: CartProps) {
   const [formData, setFormData] = useState({
     customerName: '',
     customerPhone: '',
-    customerAddress: ''
+    customerAddress: '',
+    paymentMethod: 'cash'
   });
 
   if (!isOpen) return null;
@@ -51,7 +52,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
       if (response.ok) {
         alert('Order placed successfully! We will contact you soon.');
         clearCart();
-        setFormData({ customerName: '', customerPhone: '', customerAddress: '' });
+        setFormData({ customerName: '', customerPhone: '', customerAddress: '', paymentMethod: 'cash' });
         handleClose();
       } else {
         alert('Failed to place order. Please try again.');
@@ -121,6 +122,73 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                     placeholder="123 Main St, Apt 4B, City, Zip"
                   />
                 </div>
+
+                <div className="pt-2">
+                  <h4 className="text-sm font-medium text-gray-900 mb-3">Payment Method</h4>
+                  <div className="grid grid-cols-2 gap-3">
+                    <label className={`cursor-pointer flex flex-col items-center justify-center p-4 border rounded-xl transition-all ${formData.paymentMethod === 'cash' ? 'border-orange-500 bg-orange-50 text-orange-700' : 'border-gray-200 hover:border-orange-200'}`}>
+                      <input 
+                        type="radio" 
+                        name="paymentMethod" 
+                        value="cash" 
+                        className="sr-only"
+                        checked={formData.paymentMethod === 'cash'}
+                        onChange={(e) => setFormData({...formData, paymentMethod: e.target.value})}
+                      />
+                      <Banknote className={`h-6 w-6 mb-2 ${formData.paymentMethod === 'cash' ? 'text-orange-600' : 'text-gray-400'}`} />
+                      <span className="text-sm font-medium">Cash on Delivery</span>
+                    </label>
+                    <label className={`cursor-pointer flex flex-col items-center justify-center p-4 border rounded-xl transition-all ${formData.paymentMethod === 'card' ? 'border-orange-500 bg-orange-50 text-orange-700' : 'border-gray-200 hover:border-orange-200'}`}>
+                      <input 
+                        type="radio" 
+                        name="paymentMethod" 
+                        value="card" 
+                        className="sr-only"
+                        checked={formData.paymentMethod === 'card'}
+                        onChange={(e) => setFormData({...formData, paymentMethod: e.target.value})}
+                      />
+                      <CreditCard className={`h-6 w-6 mb-2 ${formData.paymentMethod === 'card' ? 'text-orange-600' : 'text-gray-400'}`} />
+                      <span className="text-sm font-medium">Credit Card</span>
+                    </label>
+                  </div>
+                </div>
+
+                {formData.paymentMethod === 'card' && (
+                  <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3 mt-4">
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Card Number</label>
+                      <input
+                        type="text"
+                        required
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none text-sm"
+                        placeholder="0000 0000 0000 0000"
+                        maxLength={19}
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">Expiry Date</label>
+                        <input
+                          type="text"
+                          required
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none text-sm"
+                          placeholder="MM/YY"
+                          maxLength={5}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">CVC</label>
+                        <input
+                          type="text"
+                          required
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none text-sm"
+                          placeholder="123"
+                          maxLength={4}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
               </form>
             ) : cart.length === 0 ? (
               <div className="text-center py-12 flex flex-col items-center">

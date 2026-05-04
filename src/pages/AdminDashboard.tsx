@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Product, Order } from '../types';
-import { Plus, Pencil, Trash2, Image as ImageIcon, Loader2, X, Lock, Package, ShoppingBag, CheckCircle, Clock } from 'lucide-react';
+import { Plus, Pencil, Trash2, Image as ImageIcon, Loader2, X, Lock, Package, ShoppingBag, CheckCircle, Clock, CreditCard, Banknote } from 'lucide-react';
 
 export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -466,6 +466,13 @@ export default function AdminDashboard() {
                         <p className="text-sm text-gray-700"><span className="font-medium">Name:</span> {order.customerName}</p>
                         <p className="text-sm text-gray-700"><span className="font-medium">Phone:</span> {order.customerPhone}</p>
                         <p className="text-sm text-gray-700"><span className="font-medium">Address:</span> {order.customerAddress}</p>
+                        <p className="text-sm text-gray-700 mt-2 pt-2 border-t border-gray-200">
+                          <span className="font-medium">Payment Method:</span>{' '}
+                          <span className="capitalize inline-flex items-center gap-1">
+                            {order.paymentMethod === 'card' ? <CreditCard className="h-3 w-3" /> : <Banknote className="h-3 w-3" />}
+                            {order.paymentMethod === 'card' ? 'Credit Card' : 'Cash on Delivery'}
+                          </span>
+                        </p>
                       </div>
 
                       <div>

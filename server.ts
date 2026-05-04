@@ -102,6 +102,7 @@ const orderSchema = new mongoose.Schema({
   customerName: { type: String, required: true },
   customerPhone: { type: String, required: true },
   customerAddress: { type: String, required: true },
+  paymentMethod: { type: String, enum: ['cash', 'card'], default: 'cash' },
   items: [{
     productId: String,
     name: String,
@@ -225,12 +226,13 @@ app.delete('/api/products/:id', async (req, res) => {
 // Order Routes
 app.post('/api/orders', async (req, res) => {
   try {
-    const { customerName, customerPhone, customerAddress, items, totalAmount } = req.body;
+    const { customerName, customerPhone, customerAddress, paymentMethod, items, totalAmount } = req.body;
     
     const orderData = {
       customerName,
       customerPhone,
       customerAddress,
+      paymentMethod: paymentMethod || 'cash',
       items,
       totalAmount,
       status: 'Pending'
